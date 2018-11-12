@@ -1,0 +1,36 @@
+---
+title: "test"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+url <- "https://raw.githubusercontent.com/rafalab/dslabs/master/inst/extdata/murders.csv" 
+
+dest_file <- "data/murders.csv" 
+
+download.file(url, destfile = dest_file)
+
+```
+
+```{r}
+library(tidyverse)
+
+murders <- read.csv("data/murders.csv")
+
+murders <- murders %>% mutate(region = factor(region), rate = total / population * 10^5)
+
+save(murders, file = "rda/murders.rda")                              
+```
+
+```{r histogram, echo=FALSE}
+
+hist(murders$rate, main = "Rate of Murders in USA", xlab = "murder rate")
+
+
+```
+
